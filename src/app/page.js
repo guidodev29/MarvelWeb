@@ -1,4 +1,5 @@
 'use client';
+export const dynamic = 'force-dynamic';
 import { useEffect, useState, Suspense } from 'react';
 import { fetchMarvelData } from './services/marvelService';
 import FilterBar from './components/FilterBar';
