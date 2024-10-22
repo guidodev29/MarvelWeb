@@ -39,12 +39,18 @@ function CharactersContent() {
   return (
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Personajes</h1>
+
       <FilterBar query={query} onSearch={(q) => setQuery(q)} />
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         {characters.map((char) => (
           <div key={char.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4">{char.name}</h2>
-            <img src={`${char.thumbnail.path}.${char.thumbnail.extension}`} alt={char.name} />
+            <img 
+              src={`${char.thumbnail.path}.${char.thumbnail.extension}`} 
+              alt={char.name} 
+              className="w-full h-64 object-cover rounded-md"
+            />
             <Link href={`/character/${char.id}`}>
               <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 mt-4">
                 Ver más
@@ -52,6 +58,29 @@ function CharactersContent() {
             </Link>
           </div>
         ))}
+      </div>
+
+      {/* Paginación */}
+      <div className="flex justify-center space-x-4 mt-8">
+        {page > 1 && (
+          <button
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+          >
+            Anterior
+          </button>
+        )}
+        <span className="text-lg font-medium">
+          Página {page} de {totalPages}
+        </span>
+        {page < totalPages && (
+          <button
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+          >
+            Siguiente
+          </button>
+        )}
       </div>
     </div>
   );
