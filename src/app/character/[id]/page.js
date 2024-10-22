@@ -2,19 +2,22 @@ import { fetchMarvelData } from '../../services/marvelService';
 import Link from 'next/link';
 
 export default async function CharacterDetail({ params }) {
-  console.log('Params:', params); // Verifica si los parámetros se reciben correctamente
+  const { id } = params; // Extraer 'id' de los parámetros
 
-  const { id } = params;
   const data = await fetchMarvelData('characters', 1, 0, id);
-  const character = data?.data?.results?.[0];
+  const character = data?.data?.results?.[0] || null;
 
   if (!character) {
-    return <div className="text-center text-red-500 mt-10">Personaje no encontrado.</div>;
+    return (
+      <div className="text-center text-red-500 mt-10">
+        Personaje no encontrado.
+      </div>
+    );
   }
 
   return (
     <div className="p-10 bg-gradient-to-br from-gray-800 to-black min-h-screen text-white">
-      <Link href="/character">
+      <Link href="/">
         <button className="mb-8 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg">
           ← Volver a la lista
         </button>
@@ -30,7 +33,7 @@ export default async function CharacterDetail({ params }) {
         />
       ) : (
         <img
-          src="/placeholder-image.png"
+          src="/character-image.png"
           alt="Imagen no disponible"
           className="w-full h-96 object-cover rounded-md mb-4"
         />

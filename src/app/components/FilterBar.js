@@ -26,7 +26,7 @@ const FilterBar = ({ onSearch, query, resetSearch, hasResults }) => {
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Buscar..."
-        className="p-2 rounded w-64"
+        className="p-2 rounded w-64 text-black"
       />
       {hasResults ? (
         <button

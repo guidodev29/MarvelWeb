@@ -1,0 +1,19 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "San Salvador",
+			"country": {
+				"code": "SV",
+				"name": "El Salvador"
+			},
+			"subdivision": {
+				"code": "SS",
+				"name": "San Salvador Department"
+			},
+			"timezone": "America/El_Salvador",
+			"latitude": 13.6806,
+			"longitude": -89.1803
+		},
+		"timestamp": 1729325142533
+	}
+}

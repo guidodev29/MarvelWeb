@@ -2,16 +2,16 @@
 import { useEffect, useState } from 'react';
 import { fetchMarvelData } from './services/marvelService';
 import FilterBar from './components/FilterBar';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function CharactersList() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState('');
-  const [hasResults, setHasResults] = useState(false); // Estado para saber si hay resultados
+  const [hasResults, setHasResults] = useState(false);
   const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
 
   const limit = 20;
@@ -25,7 +25,7 @@ export default function CharactersList() {
         const data = await fetchMarvelData('characters', limit, offset, null, filters);
         setCharacters(data.data.results);
         setTotalPages(Math.ceil(data.data.total / limit));
-        setHasResults(query.length > 0); // Cambia si hay un query activo
+        setHasResults(query.length > 0);
       } catch (error) {
         console.error('Error fetching characters:', error);
       } finally {
@@ -41,8 +41,8 @@ export default function CharactersList() {
   };
 
   const resetSearch = () => {
-    setQuery(''); // Reinicia la búsqueda
-    setPage(1); // Vuelve a la primera página
+    setQuery('');
+    setPage(1);
   };
 
   if (loading) {
@@ -74,12 +74,11 @@ export default function CharactersList() {
                   className="w-full h-64 object-cover rounded-md mb-4"
                 />
               )}
-              <button
-                onClick={() => router.push(`/characters/${character.id}`)}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-              >
-                Ver más
-              </button>
+              <Link href={`/character/${character.id}`}>
+                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+                  Ver más
+                </button>
+              </Link>
             </div>
           ))}
         </div>
@@ -87,13 +86,21 @@ export default function CharactersList() {
 
       <div className="flex justify-center space-x-4 mt-8">
         {page > 1 && (
-          <button onClick={() => setPage(page - 1)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+          <button
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+          >
             Anterior
           </button>
         )}
-        <span className="text-lg font-medium">Página {page} de {totalPages}</span>
+        <span className="text-lg font-medium">
+          Página {page} de {totalPages}
+        </span>
         {page < totalPages && (
-          <button onClick={() => setPage(page + 1)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+          <button
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+          >
             Siguiente
           </button>
         )}
