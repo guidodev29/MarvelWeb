@@ -34,13 +34,18 @@ function CharactersContent() {
     fetchCharacters();
   }, [page, query]);
 
+  const resetSearch = () => {
+    setQuery(''); // Limpia la búsqueda
+    setPage(1); // Reinicia a la primera página
+  };
+
   if (loading) return <div className="text-center text-white">Cargando personajes...</div>;
 
   return (
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Personajes</h1>
 
-      <FilterBar query={query} onSearch={(q) => setQuery(q)} />
+      <FilterBar query={query} onSearch={(q) => setQuery(q)} resetSearch={resetSearch} hasResults={!!query} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         {characters.map((char) => (
@@ -60,7 +65,6 @@ function CharactersContent() {
         ))}
       </div>
 
-      {/* Paginación */}
       <div className="flex justify-center space-x-4 mt-8">
         {page > 1 && (
           <button
@@ -70,9 +74,7 @@ function CharactersContent() {
             Anterior
           </button>
         )}
-        <span className="text-lg font-medium">
-          Página {page} de {totalPages}
-        </span>
+        <span className="text-lg font-medium">Página {page} de {totalPages}</span>
         {page < totalPages && (
           <button
             onClick={() => setPage(page + 1)}

@@ -16,7 +16,7 @@ const FilterBar = ({ onSearch, query, resetSearch, hasResults }) => {
 
   const handleReset = () => {
     setSearchInput(''); // Limpia el campo de texto
-    resetSearch(); // Resetea la búsqueda
+    resetSearch(); // Resetea la búsqueda y vuelve al inicio
   };
 
   return (
