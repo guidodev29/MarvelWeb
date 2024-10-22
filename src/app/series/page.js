@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { fetchMarvelData } from '../services/marvelService';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function SeriesList() {
+function SeriesList() {
   const searchParams = useSearchParams(); // Obtener parámetros de búsqueda de la URL
   const router = useRouter(); // Navegación programática
 
@@ -37,12 +37,9 @@ export default function SeriesList() {
   }
 
   return (
-    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Series</h1>
 
-      {/* Suspense para manejar la carga del contenido */}
-      <Suspense fallback={<div className="text-center text-white">Cargando series...</div>}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {series.map((serie) => (
             <div key={serie.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -69,7 +66,6 @@ export default function SeriesList() {
             </div>
           ))}
         </div>
-      </Suspense>
 
       {/* Paginación */}
       <div className="flex justify-center space-x-4 mt-8">
@@ -94,6 +90,13 @@ export default function SeriesList() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SeriesPage() {
+  return (
+    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
+      <SeriesList />
     </Suspense>
   );
 }

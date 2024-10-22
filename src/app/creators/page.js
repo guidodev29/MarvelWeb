@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { fetchMarvelData } from '../services/marvelService';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function CreatorsList() {
+function CreatorsList() {
   const searchParams = useSearchParams(); // Obtener parámetros de búsqueda desde la URL
   const router = useRouter(); // Manejo de navegación programática
 
@@ -37,12 +37,8 @@ export default function CreatorsList() {
   }
 
   return (
-    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Creadores</h1>
-
-      {/* Suspense para envolver el contenido de los creadores */}
-      <Suspense fallback={<div>Cargando creadores...</div>}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {creators.map((creator) => (
             <div key={creator.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -69,7 +65,6 @@ export default function CreatorsList() {
             </div>
           ))}
         </div>
-      </Suspense>
 
       {/* Paginación */}
       <div className="flex justify-center space-x-4 mt-8">
@@ -94,6 +89,14 @@ export default function CreatorsList() {
         )}
       </div>
     </div>
+  );
+}
+
+// Envuelve el componente en Suspense
+export default function CreatorsPage() {
+  return (
+    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
+      <CreatorsList />
     </Suspense>
   );
 }
