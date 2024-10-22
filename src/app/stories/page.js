@@ -37,6 +37,7 @@ export default function StoriesList() {
   }
 
   return (
+    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Historias</h1>
 
@@ -80,5 +81,6 @@ export default function StoriesList() {
         )}
       </div>
     </div>
+    </Suspense>
   );
 }

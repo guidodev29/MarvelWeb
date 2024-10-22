@@ -12,7 +12,7 @@ export default function CreatorsList() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
 
-  const page = parseInt(searchParams.get('page') || '1'); // Página actual desde la URL
+  const page = parseInt(searchParams.get('page') || '1');
   const limit = 20;
   const offset = (page - 1) * limit;
 
@@ -37,6 +37,7 @@ export default function CreatorsList() {
   }
 
   return (
+    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
     <div className="p-10 bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
       <h1 className="text-5xl font-extrabold mb-8 text-center">Creadores</h1>
 
@@ -93,5 +94,6 @@ export default function CreatorsList() {
         )}
       </div>
     </div>
+    </Suspense>
   );
 }
