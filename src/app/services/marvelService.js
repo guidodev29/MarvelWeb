@@ -7,6 +7,7 @@
  * @param {object} [filters] - Filtros adicionales (ej: { nameStartsWith: 'Spider' }).
  * @returns {Promise<any>} - Los datos de la API en formato JSON.
  */
+
 export const fetchMarvelData = async (
   endpoint,
   limit = 20,
@@ -29,7 +30,11 @@ export const fetchMarvelData = async (
       params.append(key, filters[key]);
     }
 
-    const url = `/api/marvel?${params.toString()}`;
+    // ✅ Detectar si estamos en servidor
+    const isServer = typeof window === 'undefined';
+    const baseUrl = isServer ? process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' : '';
+    const url = `${baseUrl}/api/marvel?${params.toString()}`;
+
     console.log(`Calling backend: ${url}`);
 
     const response = await fetch(url);
@@ -48,3 +53,4 @@ export const fetchMarvelData = async (
     throw error;
   }
 };
+
