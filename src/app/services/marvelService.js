@@ -1,13 +1,9 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-const HASH = process.env.NEXT_PUBLIC_HASH;
-const TS = process.env.NEXT_PUBLIC_TS;
 /**
- * Función genérica para consumir la API de Marvel.
+ * Función genérica para consumir la API de Marvel desde tu backend.
  * @param {string} endpoint - El endpoint a consumir (ej: 'characters', 'comics').
  * @param {number} limit - Número de resultados por página.
  * @param {number} offset - Número de resultados a omitir para la paginación.
- * @param {number} [id] - ID opcional para obtener un recurso específico.
+ * @param {number|null} [id] - ID opcional para obtener un recurso específico.
  * @param {object} [filters] - Filtros adicionales (ej: { nameStartsWith: 'Spider' }).
  * @returns {Promise<any>} - Los datos de la API en formato JSON.
  */
@@ -19,18 +15,23 @@ export const fetchMarvelData = async (
   filters = {}
 ) => {
   try {
-    let url = `${API_BASE_URL}/${endpoint}?ts=${TS}&apikey=${API_KEY}&hash=${HASH}&limit=${limit}&offset=${offset}`;
+    const params = new URLSearchParams({
+      endpoint,
+      limit: limit.toString(),
+      offset: offset.toString(),
+    });
 
-    if (id) {
-      url = `${API_BASE_URL}/${endpoint}/${id}?ts=${TS}&apikey=${API_KEY}&hash=${HASH}`;
+    if (id !== null) {
+      params.append('id', id.toString());
     }
 
-    const filterParams = new URLSearchParams(filters).toString();
-    if (filterParams) {
-      url += `&${filterParams}`;
+    for (const key in filters) {
+      params.append(key, filters[key]);
     }
 
-    console.log(`Fetching data from: ${url}`); // Verifica la URL
+    const url = `/api/marvel?${params.toString()}`;
+    console.log(`Calling backend: ${url}`);
+
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -41,10 +42,9 @@ export const fetchMarvelData = async (
     }
 
     const data = await response.json();
-    console.log('Data fetched:', data); // Muestra los datos obtenidos
     return data;
   } catch (error) {
-    console.error(`Error fetching ${endpoint}:`, error);
+    console.error(`Error fetching Marvel data:`, error);
     throw error;
   }
 };
